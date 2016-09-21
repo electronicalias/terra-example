@@ -10,6 +10,11 @@ test:
     - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/terraform.plan"
 
 deployment:
+  feature:
+    branch: /feature_.*/
+    commands:
+      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
+      - ./terraform remote push
   development:
     branch: develop
     commands:
