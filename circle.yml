@@ -1,3 +1,7 @@
+machine:
+  environment:
+    ENV: if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; fi
+
 dependencies:
   pre:
     - wget https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip
@@ -5,17 +9,6 @@ dependencies:
 
 test:
   override:
-    - | # Test multiline yaml support
-      if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-        ENV="master"
-        echo $ENV
-      elif [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-        ENV="develop"
-        echo $ENV
-      else
-        ENV="develop"
-        echo $ENV
-      fi
     - ./terraform remote config -backend=S3 -backend-config="bucket=$BUCKET" -backend-config="key=$CIRCLE_BRANCH/terraform.tfstate" -backend-config="region=$REGION"
     - ./terraform get
     - ./terraform plan -var "run_region=$REGION" -var-file="$ENV/terraform.tfvars" -out="$ENV/terraform.plan"
