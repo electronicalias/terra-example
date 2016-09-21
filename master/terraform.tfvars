@@ -1,5 +1,5 @@
-environment_name = "qa"
-vpc_name = "psmith-vpc-qa"
+environment_name = "production"
+vpc_name = "psmith-vpc-prod"
 vpc_cidr  = "10.4.0.0/16"
 public_subnet01 = "10.4.0.0/20"
 public_subnet02 = "10.4.16.0/20"
