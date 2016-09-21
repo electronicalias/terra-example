@@ -1,4 +1,4 @@
-module "app-sg" {
+module "security_group" {
   source = "github.com/electronicalias/tf-aws-sg"
 
   name = "${var.app_sg_name}"
