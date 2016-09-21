@@ -1,3 +1,5 @@
+app_sg_name = "myapp1-sg"
+app_sg_description = "This is the security group for applications"
 environment_name = "development"
 vpc_name = "psmith-vpc-dev"
 vpc_cidr  = "10.3.0.0/16"
