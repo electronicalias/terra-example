@@ -1,0 +1,9 @@
+variable "environment_name" {}
+variable "vpc_name" {}
+variable "vpc_cidr" {}
+variable "public_subnet01" {}
+variable "public_subnet02" {}
+variable "public_subnet03" {}
+variable "private_subnet01" {}
+variable "private_subnet02" {}
+variable "private_subnet03" {}
