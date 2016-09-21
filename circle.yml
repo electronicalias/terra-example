@@ -7,11 +7,14 @@ test:
   override:
     - | # Test multiline yaml support
       if [[ "$CIRCLE_BRANCH" == "master" ]]; then
-        ENV='master'
+        ENV="master"
+        echo $ENV
       elif [[ "$CIRCLE_BRANCH" == "develop" ]]; then
-        ENV='develop'
+        ENV="develop"
+        echo $ENV
       else
-        ENV='develop'
+        ENV="develop"
+        echo $ENV
       fi
     - ./terraform remote config -backend=S3 -backend-config="bucket=$BUCKET" -backend-config="key=$CIRCLE_BRANCH/terraform.tfstate" -backend-config="region=$REGION"
     - ./terraform get
