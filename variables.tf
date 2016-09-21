@@ -1,3 +1,4 @@
+variable "run_region" {}
 variable "environment_name" {}
 variable "vpc_name" {}
 variable "vpc_cidr" {}
