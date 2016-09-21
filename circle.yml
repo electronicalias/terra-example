@@ -1,6 +1,22 @@
+dependencies:
+  pre:
+    - wget https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip
+    - unzip terraform_0.7.4_linux_amd64.zip
+
+test:
+  override:
+    - ./terraform remote config -backend=S3 -backend-config="bucket=$BUCKET" -backend-config="key=$CIRCLE_BRANCH/terraform.tfstate" -backend-config="region=$REGION"
+    - ./terraform get
+    - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/terraform.plan"
+
 deployment:
   development:
+    branch: develop
+    commands:
+      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
+      - ./terraform remote push
+  production:
     branch: master
     commands:
-      - ./terraform apply terraform.plan
+      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
       - ./terraform remote push
