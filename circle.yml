@@ -5,23 +5,31 @@ dependencies:
 
 test:
   override:
+    - | # Test multiline yaml support
+      if [[ "$CIRCLE_BRANCH" == "master" ]]; then
+        ENV='master'
+      elif [[ "$CIRCLE_BRANCH" == "develop" ]]; then
+        ENV='develop'
+      else
+        ENV='develop'
+      fi
     - ./terraform remote config -backend=S3 -backend-config="bucket=$BUCKET" -backend-config="key=$CIRCLE_BRANCH/terraform.tfstate" -backend-config="region=$REGION"
     - ./terraform get
-    - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/terraform.plan"
+    - ./terraform plan -var "run_region=$REGION" -var-file="$ENV/terraform.tfvars" -out="$ENV/terraform.plan"
 
 deployment:
   feature:
     branch: /feature_.*/
     commands:
-      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
+      - ./terraform apply $EVN/terraform.plan
       - ./terraform remote push
   development:
     branch: develop
     commands:
-      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
+      - ./terraform apply $ENV/terraform.plan
       - ./terraform remote push
   production:
     branch: master
     commands:
-      - ./terraform apply $CIRCLE_BRANCH/terraform.plan
+      - ./terraform apply $ENV/terraform.plan
       - ./terraform remote push
