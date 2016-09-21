@@ -1,6 +1,6 @@
 module "security_group" {
   source = "github.com/electronicalias/tf-aws-sg"
 
-  name = "${var.app_sg_name}"
-  description = "${var.app_sg_description}"
+  sg_name = "${var.app_sg_name}"
+  sg_description = "${var.app_sg_description}"
 }
