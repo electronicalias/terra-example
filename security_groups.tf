@@ -9,5 +9,5 @@ module "web_sg" {
   source = "github.com/electronicalias/tf-aws-sg"
 
   sg_name = "${var.web_sg_name}-${var.environment}"
-  sg_description = "${var.web_sg_description-${var.environment}"
+  sg_description = "${var.web_sg_description}-${var.environment}"
 }
