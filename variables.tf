@@ -1,3 +1,7 @@
+variable "app_sg_name" {}
+variable "app_sg_description" {}
+variable "web_sg_name" {}
+variable "web_sg_description" {}
 variable "run_region" {}
 variable "environment_name" {}
 variable "vpc_name" {}
