@@ -14,5 +14,5 @@ module "vpc" {
 }
 
 output "vpc_id" {
-	value = "${module.env.id}"
+	value = "${module.vpc.id}"
 }
