@@ -1,4 +1,4 @@
-module "vpc" "env" {
+module "vpc" {
   source = "github.com/electronicalias/tf_aws_vpc"
 
   name = "${var.vpc_name}"
@@ -11,4 +11,8 @@ module "vpc" "env" {
   public_subnets  = ["${var.public_subnet01}", "${var.public_subnet02}", "${var.public_subnet03}"]
 
   azs      = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
+}
+
+output "vpc_id" {
+	value = "${module.env.id}"
 }
