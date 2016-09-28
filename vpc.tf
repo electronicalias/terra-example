@@ -1,4 +1,4 @@
-module "vpc" {
+module "vpc" "env" {
   source = "github.com/electronicalias/tf_aws_vpc"
 
   name = "${var.vpc_name}"
