@@ -15,11 +15,20 @@ deployment:
     commands:
       - ./terraform apply $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.plan
       - ./terraform remote push
+      - ./terraform plan -var "run_region=$REGION" -var-file="$(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.tfvars" $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/destroy.plan -destroy;
+      - ./terraform destroy -var "run_region=$REGION" -force
   development:
     branch: develop
     commands:
       - ./terraform apply $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.plan
       - ./terraform remote push
+      - $(if [[ "$DELETE" != "TRUE" ]]; then 
+            echo "Environment Still Required"
+          else 
+            ./terraform plan -var "run_region=$REGION" -var-file="develop/terraform.tfvars" -out="develop/destroy.plan" -destroy;
+            ./terraform destroy -var "run_region=$REGION" -force
+          fi
+        )
   production:
     branch: master
     commands:
@@ -28,7 +37,7 @@ deployment:
       - $(if [[ "$DELETE" != "TRUE" ]]; then 
             echo "Environment Still Required"
           else 
-            ./terraform plan -var "run_region=$REGION" -var-file="$(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.tfvars" $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/destroy.plan -destroy;
+            ./terraform plan -var "run_region=$REGION" -var-file="master/terraform.tfvars" -out="master/destroy.plan" -destroy;
             ./terraform destroy -var "run_region=$REGION" -force
           fi
         )
