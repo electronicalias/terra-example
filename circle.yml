@@ -30,7 +30,7 @@ deployment:
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
       - echo $DELETE
       - |
-        if [[ "$DELETE" == "TRUE" ]]; then 
+        if [[ "$DELETE" == "true" ]]; then 
           ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force
         fi
   production:
@@ -39,4 +39,4 @@ deployment:
       - ./terraform apply "$CIRCLE_BRANCH/terraform.plan"
       - ./terraform remote push
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
-      - if [[ "${MASTER_DELETE}" == "TRUE" ]]; then ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force; fi
+      - if [[ "${MASTER_DELETE}" == "true" ]]; then ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force; fi
