@@ -21,7 +21,7 @@ module "pci_vpc" {
   enable_dns_hostnames = true
   enable_dns_support = true
 
-  cidr = "${var.pci_vpc["cidr"]}"
+  cidr = "${var.pci_vpc[0]}"
   private_subnets = ["${var.pci_vpc["private_subnet01"]}"]
   public_subnets  = ["${var.pci_vpc["public_subnet01"]}"]
 
