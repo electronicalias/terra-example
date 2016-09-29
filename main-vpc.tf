@@ -13,7 +13,7 @@ module "vpc" {
   azs      = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
 
-module "vpc" {
+module "pci_vpc" {
   source = "github.com/electronicalias/tf_aws_vpc"
 
   name = "${var.pci_vpc[1]}"
