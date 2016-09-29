@@ -12,7 +12,3 @@ module "vpc" {
 
   azs      = ["eu-west-1a", "eu-west-1b", "eu-west-1c"]
 }
-
-output "vpc_id" {
-	value = "${module.vpc.id}"
-}
