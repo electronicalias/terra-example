@@ -26,8 +26,8 @@ deployment:
       - ./terraform apply $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.plan
       - ./terraform remote push
       - $(if [[ "$DELETE" == "TRUE" ]]; then 
-            echo "It was True"
+            echo "It was True";
           else
-            echo "It was False"
+            echo "It was False";
           fi
         )
