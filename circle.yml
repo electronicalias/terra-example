@@ -21,7 +21,7 @@ deployment:
     commands:
       - ./terraform apply "test/terraform.plan"
       - ./terraform remote push
-      - ./terraform plan -var "test/terraform.tfvars" -out="test/destroy.plan" -destroy
+      - ./terraform plan -var-file="test/terraform.tfvars" -out="test/destroy.plan" -destroy
       - ./terraform destroy -var "run_region=$REGION" -force
   development:
     branch: develop
