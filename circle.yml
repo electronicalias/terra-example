@@ -37,7 +37,7 @@ deployment:
       - $(if [[ "$DELETE" != "TRUE" ]]; then 
             echo "Environment Still Required"
           else 
-            ./terraform plan -var "run_region=$REGION" -var-file="master/terraform.tfvars" -out="master/destroy.plan" -destroy
-            ./terraform destroy -var "run_region=$REGION" -force;
+            echo './terraform plan -var "run_region=$REGION" -var-file="master/terraform.tfvars" -out="master/destroy.plan" -destroy'
+            echo './terraform destroy -var "run_region=$REGION" -force';
           fi
         )
