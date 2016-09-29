@@ -2,7 +2,6 @@ machine:
   environment:
     DELETE: TRUE
     MASTER_DELETE: FALSE
-    CIRCLE_BRANCH: if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); fi
     
 dependencies:
   pre:
@@ -14,15 +13,15 @@ test:
   override:
     - ./terraform remote config -backend=S3 -backend-config="bucket=$BUCKET" -backend-config="key=$CIRCLE_BRANCH/terraform.tfstate" -backend-config="region=$REGION"
     - ./terraform get
-    - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/terraform.plan"
+    - ./terraform plan -var "run_region=$REGION" -var-file="$(if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); else $(echo "$CIRCLE_BRANCH"); fi)/terraform.tfvars" -out="$(if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); else $(echo "$CIRCLE_BRANCH"); fi)/terraform.plan"
 
 deployment:
   feature:
     branch: /feature_.*/
     commands:
-      - ./terraform apply "$CIRCLE_BRANCH"/terraform.plan
+      - ./terraform apply "$(if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); else $(echo "$CIRCLE_BRANCH"); fi)/terraform.plan
       - ./terraform remote push
-      - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
+      - ./terraform plan -var "run_region=$REGION" -var-file="$(if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); else $(echo "$CIRCLE_BRANCH"); fi)/terraform.tfvars" -out="$(if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); else $(echo "$CIRCLE_BRANCH"); fi)/destroy.plan" -destroy
       - ./terraform destroy -var "run_region=$REGION" -force;
   development:
     branch: develop
