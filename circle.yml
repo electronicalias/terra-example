@@ -29,4 +29,5 @@ deployment:
             echo "It was True"
           else;
             echo "It was False"
+          fi
         )
