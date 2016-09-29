@@ -16,14 +16,14 @@ module "vpc" {
 module "pci_vpc" {
   source = "github.com/electronicalias/tf_aws_vpc"
 
-  name = "${var.pci_vpc[1]}"
+  name = "${var.pci_vpc["name"]}"
   environment = "${var.environment_name}"
   enable_dns_hostnames = true
   enable_dns_support = true
 
-  cidr = "${var.pci_vpc[0]}"
-  private_subnets = ["${var.pci_vpc[2]}"]
-  public_subnets  = ["${var.pci_vpc[3]}"]
+  cidr = "${var.pci_vpc["cidr"]}"
+  private_subnets = ["${var.pci_vpc["private_subnet01"]}"]
+  public_subnets  = ["${var.pci_vpc["public_subnet01"]}"]
 
   azs      = ["eu-west-1b"]
 }
