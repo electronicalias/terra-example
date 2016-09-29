@@ -2,7 +2,7 @@ machine:
   environment:
     DELETE: TRUE
     MASTER_DELETE: FALSE
-    ISTEST: if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then CIRCLE_BRANCH='test'; fi
+    CIRCLE_BRANCH: if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then $(echo "test"); fi
     
 dependencies:
   pre:
