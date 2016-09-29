@@ -7,7 +7,6 @@ dependencies:
   pre:
     - wget https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip
     - unzip terraform_0.7.4_linux_amd64.zip
-    - if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then mkdir -p test; fi
 
 test:
   override:
@@ -29,7 +28,10 @@ deployment:
       - ./terraform apply "$CIRCLE_BRANCH/terraform.plan"
       - ./terraform remote push
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
-      - if [[ "${DELETE}" == "TRUE" ]]; then ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force; fi
+      - |
+        if [[ "$DELETE" == "TRUE" ]]; then 
+          ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force
+        fi
   production:
     branch: master
     commands:
