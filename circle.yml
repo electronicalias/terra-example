@@ -7,7 +7,7 @@ dependencies:
   pre:
     - wget https://releases.hashicorp.com/terraform/0.7.4/terraform_0.7.4_linux_amd64.zip
     - unzip terraform_0.7.4_linux_amd64.zip
-    - if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then mkdir -p $CIRCLE_BRANCH; fi
+    - if [[ "$CIRCLE_BRANCH" != "develop" ]] && [[ "$CIRCLE_BRANCH" != "master" ]]; then mkdir -p test; fi
 
 test:
   override:
@@ -17,23 +17,23 @@ test:
 
 deployment:
   feature:
-    branch: /feature_.*/
+    branch: /feature.*/
     commands:
       - ./terraform apply "test/terraform.plan"
       - ./terraform remote push
       - ./terraform plan -var "test/terraform.tfvars" -out="test/destroy.plan" -destroy
-      - ./terraform destroy -var "run_region=$REGION" -force;
+      - ./terraform destroy -var "run_region=$REGION" -force
   development:
     branch: develop
     commands:
-      - ./terraform apply "$CIRCLE_BRANCH/terraform.plan
+      - ./terraform apply "$CIRCLE_BRANCH/terraform.plan"
       - ./terraform remote push
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
       - if [[ "$DELETE" == "TRUE" ]]; then ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force; fi
   production:
     branch: master
     commands:
-      - ./terraform apply "$CIRCLE_BRANCH"/terraform.plan
+      - ./terraform apply "$CIRCLE_BRANCH"/terraform.plan"
       - ./terraform remote push
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
       - if [[ "$MASTER_DELETE" == "TRUE" ]]; then ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force; fi
