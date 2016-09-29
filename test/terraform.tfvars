@@ -13,9 +13,3 @@ public_subnet03 = "10.5.32.0/20"
 private_subnet01 = "10.5.128.0/20"
 private_subnet02 = "10.5.144.0/20"
 private_subnet03 = "10.5.160.0/20"
-pci_vpc = {
-  cidr = "10.6.0.0/16"
-  name = "psmith-ppes-test-pci"
-  public_subnet01 = "10.6.0.0/20"
-  private_subnet01 = "10.6.128.0/20"
-}
