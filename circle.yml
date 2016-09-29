@@ -22,13 +22,8 @@ deployment:
     commands:
       - ./terraform apply $(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.plan
       - ./terraform remote push
-      - $(if [[ "$DELETE" != "TRUE" ]]; then 
-            echo "Environment Still Required"
-          else 
-            ./terraform plan -var "run_region=$REGION" -var-file="develop/terraform.tfvars" -out="develop/destroy.plan" -destroy;
-            ./terraform destroy -var "run_region=$REGION" -force;
-          fi
-        )
+      - ./terraform plan -var "run_region=$REGION" -var-file="develop/terraform.tfvars" -out="develop/destroy.plan" -destroy
+      - ./terraform destroy -var "run_region=$REGION" -var-file="$(if [[ "$CIRCLE_BRANCH" != "master" ]]; then echo "develop"; else echo "master"; fi)/terraform.tfvars" -force;
   production:
     branch: master
     commands:
