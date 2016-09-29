@@ -25,5 +25,5 @@ module "vpc" {
   private_subnets = ["${var.pci_vpc[2]}"]
   public_subnets  = ["${var.pci_vpc[3]}"]
 
-  azs      = ["eu-west-1a"]
+  azs      = ["eu-west-1b"]
 }
