@@ -30,7 +30,7 @@ deployment:
       - ./terraform plan -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -out="$CIRCLE_BRANCH/destroy.plan" -destroy
       - |
         if [[ "$DELETE" == "TRUE" ]]; then 
-          ./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force
+          $(./terraform destroy -var "run_region=$REGION" -var-file="$CIRCLE_BRANCH/terraform.tfvars" -force)
         fi
   production:
     branch: master
